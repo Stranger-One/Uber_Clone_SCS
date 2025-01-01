@@ -5,6 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import db from './config/db.js';
 import userRouter from './routes/userRouter.js';
+import captainRouter from './routes/captainRouter.js';
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRouter);
+app.use("/api/captains", captainRouter);
 
 
 const PORT = process.env.PORT || 5000;
