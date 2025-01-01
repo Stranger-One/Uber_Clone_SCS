@@ -2,12 +2,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import db from './config/db.js';
 import userRouter from './routes/userRouter.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+
 
 // connect to MongoDB
 db.connect();
