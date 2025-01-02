@@ -11,7 +11,10 @@ export default {
 
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
+                return res.status(400).json({ 
+                    success: false,
+                    errors: errors.array() 
+                });
             }
 
             const { firstname, lastname, email, password } = req.body;
@@ -47,11 +50,11 @@ export default {
 
             await newUser.save();
             newUser.password = undefined;
-            res.status(201).json({
+            res.status(201).cookie("token", token).json({
                 success: true,
                 message: "User registered successfully",
                 token,
-                newUser,
+                user: newUser,
             });
         } catch (error) {
             res.status(500).json({
@@ -62,10 +65,13 @@ export default {
     },
     loginUser: async (req, res) => {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+            // const errors = validationResult(req);
+            // if (!errors.isEmpty()) {
+            //     return res.status(400).json({ 
+            //         success: false,
+            //         errors: errors.array() 
+            //     });
+            // }
 
             const { email, password } = req.body;
             if (!email || !password) {

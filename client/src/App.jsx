@@ -1,11 +1,12 @@
 import React from 'react'
+import { Toaster } from 'react-hot-toast'
 import { Outlet } from 'react-router-dom'
 
 const App = () => {
   return (
-    <div className='w-full bg-slate-700 h-screen'>
-      App
+    <div className='w-full h-screen'>
       <Outlet />
+      <Toaster/>
     </div>
   )
 }
