@@ -29,7 +29,7 @@ const UserLogin = () => {
       setUserData(response.user);
       setEmail("");
       setPassword("");
-      navigate("/home");
+      navigate("/user");
     } else {
       if (response?.errors) {
         response.errors.map((error) => toast.error(error.msg.split("::")[1]));

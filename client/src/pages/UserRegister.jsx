@@ -37,7 +37,7 @@ const UserRegister = () => {
       setLastname("");
       setEmail("");
       setPassword("");
-      navigate("/home")
+      navigate("/user")
     } else {
       console.log("User register response", response);
       if(response?.errors){

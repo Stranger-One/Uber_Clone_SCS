@@ -2,8 +2,9 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AuthLayout, AuthProtector, ProfileLayout } from "./others/index.js";
+import { AuthLayout, AuthProtector, CaptainProtector, ProfileLayout, UserProtector } from "./others/index.js";
 import {
+  CaptainHome,
   CaptainLogin,
   CaptainLogout,
   CaptainRegister,
@@ -11,6 +12,7 @@ import {
   PageNotFound,
   Profile,
   Start,
+  UserHome,
   UserLogin,
   UserLogout,
   UserRegister,
@@ -27,30 +29,28 @@ const router = createBrowserRouter([
         element: <Start />,
       },
       {
-        path: "home",
-        element: <AuthProtector><Home /></AuthProtector>,
+        path: "user",
+        element: (
+          <UserProtector>
+            <UserHome />
+          </UserProtector>
+        ),
       },
       {
-        path: "profile",
-        element: <AuthProtector><ProfileLayout /></AuthProtector>,
-        children: [
-          {
-            index: true,
-            element: <Profile />,
-          },
-          {
-            path: "user-logout",
-            element: <UserLogout />,
-          },
-          {
-            path: "captain-logout",
-            element: <CaptainLogout />,
-          },
-        ]
+        path: "captain",
+        element: (
+          <CaptainProtector>
+            <CaptainHome />
+          </CaptainProtector>
+        ),
       },
       {
         path: "auth",
-        element: <AuthProtector><AuthLayout /></AuthProtector>,
+        element: (
+          <AuthProtector>
+            <AuthLayout />
+          </AuthProtector>
+        ),
         children: [
           {
             path: "user-register",
@@ -70,6 +70,28 @@ const router = createBrowserRouter([
           },
         ],
       },
+      // {
+      //   path: "profile",
+      //   element: (
+      //     <AuthProtector>
+      //       <ProfileLayout />
+      //     </AuthProtector>
+      //   ),
+      //   children: [
+      //     {
+      //       index: true,
+      //       element: <Profile />,
+      //     },
+      //     {
+      //       path: "user-logout",
+      //       element: <UserLogout />,
+      //     },
+      //     {
+      //       path: "captain-logout",
+      //       element: <CaptainLogout />,
+      //     },
+      //   ],
+      // },
       {
         path: "*",
         element: <PageNotFound />,

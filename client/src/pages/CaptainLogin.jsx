@@ -27,7 +27,7 @@ const CaptainLogin = () => {
       setCaptainData(response.captain);
       setEmail("");
       setPassword("");
-      navigate("/home");
+      navigate("/captain");
     } else {
       if (response?.errors) {
         response.errors.map((error) => toast.error(error.msg.split("::")[1]));

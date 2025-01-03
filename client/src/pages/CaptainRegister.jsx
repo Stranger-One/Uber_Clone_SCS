@@ -50,7 +50,7 @@ const CaptainRegister = () => {
       setVehicleColor("");
       setVehiclePlate("");
       setVehicleCapacity("");
-      navigate("/home");
+      navigate("/captain");
     } else {
       // console.log("Captain register response", response);
       if (response?.errors) {
