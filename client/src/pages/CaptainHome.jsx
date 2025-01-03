@@ -2,7 +2,10 @@ import React from 'react'
 
 const CaptainHome = () => {
   return (
-    <div>CaptainHome</div>
+    <section className='w-full h-screen relative'>
+      <div className="w-full h-full bg-gray-600"></div>
+
+    </section>
   )
 }
 

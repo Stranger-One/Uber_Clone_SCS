@@ -2,7 +2,6 @@ import CaptainHome from "./CaptainHome";
 import CaptainLogin from "./CaptainLogin";
 import CaptainLogout from "./CaptainLogout";
 import CaptainRegister from "./CaptainRegister";
-import Home from "./Home";
 import PageNotFound from "./PageNotFound";
 import Profile from "./Profile";
 import Start from "./Start";
@@ -19,7 +18,6 @@ export {
     Profile,
     UserLogout,
     Start,
-    Home,
     UserRegister,
     UserLogin,
     CaptainLogin,

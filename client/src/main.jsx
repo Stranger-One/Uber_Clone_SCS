@@ -8,7 +8,6 @@ import {
   CaptainLogin,
   CaptainLogout,
   CaptainRegister,
-  Home,
   PageNotFound,
   Profile,
   Start,
