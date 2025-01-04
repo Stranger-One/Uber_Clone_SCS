@@ -1,22 +1,25 @@
 import React from "react";
-import car from "../assets/UberXL.webp";
 import { FaMapMarkerAlt, FaRupeeSign } from "react-icons/fa";
+import car from "../assets/UberXL.webp";
 
-const ConfirmRide = ({setPannel}) => {
+const LookingForDriver = () => {
   return (
-    <div className="w-full h-[500px] bg-gray-600 overflow-auto">
+    <div className="w-full h-[440px] bg-gray-600 overflow-auto">
       <div className="flex flex-col items-center bg-white shadow-md rounded-md w-full max-w-md mx-auto p-4 space-y-4">
         {/* Header */}
         <h2 className="text-2xl font-semibold text-gray-800">
-          Confirm your Ride
+          Looking For a Driver
         </h2>
 
         {/* Car Image */}
-        <img
-          src={car} // Replace with your car image URL
-          alt="Car"
-          className="h-40 object-contain mx-auto"
-        />
+        <div className=" relative flex items-center justify-center">
+          <div className="w-40 h-40 bg-gray-500 rounded-full animate-ping "></div>
+          <img
+            src={car} // Replace with your car image URL
+            alt="Car"
+            className="h-40 object-contain mx-auto z-10 absolute top-0 left-0"
+          />
+        </div>
 
         {/* Location Details */}
         <div className="w-full space-y-2">
@@ -47,14 +50,9 @@ const ConfirmRide = ({setPannel}) => {
           </div>
           <p className=" text-gray-500">Cash</p>
         </div>
-
-        {/* Confirm Button */}
-        <button type="button" onClick={()=>setPannel(4)} className="w-full py-2 bg-green-500 text-white rounded-md font-semibold hover:bg-green-600 transition">
-          Confirm
-        </button>
       </div>
     </div>
   );
 };
 
-export default ConfirmRide;
+export default LookingForDriver;

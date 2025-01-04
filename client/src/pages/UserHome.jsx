@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import {
   AvailableVehicles,
   ConfirmRide,
+  LookingForDriver,
+  RideConfirm,
   SearchRideForm,
   SearchRideSuggestions,
   UberLogo,
@@ -10,7 +12,7 @@ import { FaMapMarkerAlt, FaRupeeSign } from "react-icons/fa";
 
 const UserHome = () => {
   const [isOpenSuggestions, setIsOpenSuggestions] = useState(false);
-  const [pannel, setPannel] = useState(2);
+  const [pannel, setPannel] = useState(5);
 
   return (
     <section className="w-full h-screen relative">
@@ -29,8 +31,12 @@ const UserHome = () => {
           </>
         ) : pannel === 2 ? (
           <AvailableVehicles setPannel={setPannel} />
-        ) : (
-          <ConfirmRide/>
+        ) : pannel === 3 ? (
+          <ConfirmRide setPannel={setPannel}/>
+        ): pannel === 4 ?(
+          <LookingForDriver/>
+        ):(
+          <RideConfirm/>
         )}
       </div>
     </section>

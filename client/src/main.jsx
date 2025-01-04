@@ -2,14 +2,17 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AuthLayout, AuthProtector, CaptainProtector, ProfileLayout, UserProtector } from "./others/index.js";
+import { AuthLayout, AuthProtector, CaptainHomeLayout, CaptainProtector, ProfileLayout, UserHomeLayout, UserProtector } from "./others/index.js";
 import {
   CaptainHome,
   CaptainLogin,
   CaptainLogout,
   CaptainRegister,
+  ClientDetails,
   PageNotFound,
+  PickUp,
   Profile,
+  Riding,
   Start,
   UserHome,
   UserLogin,
@@ -31,17 +34,41 @@ const router = createBrowserRouter([
         path: "user",
         element: (
           <UserProtector>
-            <UserHome />
+            <UserHomeLayout/>
           </UserProtector>
         ),
+        children: [
+          {
+            index: true,
+            element: <UserHome />
+          },
+          {
+            path: 'riding',
+            element: <Riding/>
+          }
+        ]
       },
       {
         path: "captain",
         element: (
           <CaptainProtector>
-            <CaptainHome />
+            <CaptainHomeLayout />
           </CaptainProtector>
         ),
+        children:[
+          {
+            index: true,
+            element: <CaptainHome />
+          },
+          {
+            path: "client",
+            element: <ClientDetails/>
+          },
+          {
+            path: "pickup",
+            element: <PickUp/>
+          }
+        ]
       },
       {
         path: "auth",
