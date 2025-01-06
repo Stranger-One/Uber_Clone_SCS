@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default {
   getAddress: async (req, res) => {
-    const { lat, long } = req.query;
-    if ((!lat, !long)) {
+    const { lat, lon } = req.query;
+    if ((!lat, !lon)) {
       res.status(400).json({
         success: false,
         message: "Please provide both latitude and longitude",
@@ -11,7 +11,7 @@ export default {
     }
 
     const apiKey = process.env.LOCATION_IQ_API; // Replace with your API key
-    const url = `https://us1.locationiq.com/v1/reverse.php?key=${apiKey}&lat=${lat}&lon=${long}&format=json`; // coordinates to address
+    const url = `https://us1.locationiq.com/v1/reverse.php?key=${apiKey}&lat=${lat}&lon=${lon}&format=json`; // coordinates to address
 
     try {
       const response = await axios.get(url);
