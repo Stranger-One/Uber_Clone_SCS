@@ -2,7 +2,7 @@ import React from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const NewRideOffer = ({setNewRide}) => {
+const NewRideOffer = ({ setNewRide }) => {
   return (
     <div className="w-full h-[400px] absolute bottom-0 left-0 z-20 p-2">
       <div className="bg-gray-200 rounded-md p-2 h-full flex flex-col justify-between">
@@ -40,8 +40,8 @@ const NewRideOffer = ({setNewRide}) => {
           </div>
         </div>
         <div className="w-full flex items-center justify-between gap-2">
-            <button type="button" onClick={()=>setNewRide(false)} className="w-full py-3 rounded-lg text-xl font-bold text-gray-600 border-gray-600 border-2">Ignore</button>
-            <Link to={'/captain/client'} className="w-full py-3 rounded-lg text-xl font-bold bg-green-600 block text-center">Details</Link>
+          <button type="button" onClick={() => setNewRide(false)} className="w-full py-3 rounded-lg text-xl font-bold text-gray-600 border-gray-600 border-2">Ignore</button>
+          <Link to={'/captain/client'} className="w-full py-3 rounded-lg text-xl font-bold bg-green-600 block text-center">Details</Link>
         </div>
       </div>
     </div>
