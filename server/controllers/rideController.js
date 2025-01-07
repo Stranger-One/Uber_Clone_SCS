@@ -3,8 +3,9 @@ import otpService from "../services/otpService.js";
 
 export default {
   createRide: async (req, res) => {
-    const { userId, pickup, destination, vehicle } = req.body;
-    if (!userId || !pickup || !destination || !vehicle) {
+    const { pickup, destination, vehicle } = req.body;
+    const user = req.user;
+    if ( !user || !pickup || !destination || !vehicle) {
       return res.status(400).json({
         success: false,
         message: "Please fill all fields",
@@ -13,7 +14,7 @@ export default {
 
     try {
       const newRide = new Ride({
-        user:userId,
+        user:user._id,
         pickup,
         destination,
         fare: vehicle.fare,

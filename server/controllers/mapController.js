@@ -38,9 +38,9 @@ export default {
     }
 
     const apiKey = process.env.LOCATION_IQ_API; // Replace with your API key
-    const url = `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${encodeURIComponent(
+    const url = `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${
       address
-    )}&format=json`; // address to coordinates
+    }&format=json`; // address to coordinates
 
     try {
       const response = await axios.get(url);
