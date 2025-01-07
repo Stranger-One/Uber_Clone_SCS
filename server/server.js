@@ -7,6 +7,8 @@ import db from './config/db.js';
 import userRouter from './routes/userRouter.js';
 import captainRouter from './routes/captainRouter.js';
 import mapRouter from './routes/mapRouter.js'
+import rideRouter from "./routes/rideRouter.js"
+
 
 const app = express();
 app.use(cors());
@@ -25,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRouter);
 app.use("/api/captains", captainRouter);
 app.use("/api/map", mapRouter)
+app.use("/api/ride", rideRouter)
 
 
 const PORT = process.env.PORT || 5000;

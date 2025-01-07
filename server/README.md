@@ -856,6 +856,80 @@ GET /api/map/getSuggestions?query=sambalpur
 ### Note
 All map endpoints use the LocationIQ API service and require valid API credentials in the server environment.
 
+## Ride API Endpoints
+
+## Endpoint: `/api/ride/create`
+
+### Method: POST
+
+### Description
+Creates a new ride request in the system. Generates a unique OTP for ride verification and calculates the fare based on distance and duration.
+
+### Authentication Required
+User must be logged in. Provide token via:
+- Cookie: `token=<jwt_token>`
+- Header: `Authorization: Bearer <jwt_token>`
+
+### Request Body
+```json
+{
+    "userId": "string",
+    "pickup": "string",
+    "destination": "string",
+    "vehicle": {
+        "fare": "number"
+    }
+}
+```
+
+### Example Request
+```json
+{
+    "userId": "507f1f77bcf86cd799439011",
+    "pickup": "Bhubaneswar Railway Station",
+    "destination": "Kalinga Institute of Industrial Technology",
+    "vehicle": {
+        "fare": 350
+    }
+}
+```
+
+### Example Successful Response
+```json
+{
+    "success": true,
+    "message": "Ride created successfully",
+    "ride": {
+        "user": "507f1f77bcf86cd799439011",
+        "pickup": "Bhubaneswar Railway Station",
+        "destination": "Kalinga Institute of Industrial Technology",
+        "fare": 350,
+        "status": "pending",
+        "otp": "123456",
+        "_id": "507f1f77bcf86cd799439012"
+    }
+}
+```
+
+### Example Error Response
+```json
+{
+    "success": false,
+    "message": "Please fill all fields"
+}
+```
+
+### Error Cases
+- Missing required fields
+- Invalid user ID
+- Server error
+- Unauthorized access
+
+### Notes
+- The OTP is generated as a 6-digit number
+- The initial status is set to 'pending'
+- Fare calculation is based on the vehicle type selected
+
 
 
 

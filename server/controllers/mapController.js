@@ -1,4 +1,5 @@
 import axios from "axios";
+import calculateFare from "../services/calculateFare.js";
 
 export default {
   getAddress: async (req, res) => {
@@ -65,15 +66,18 @@ export default {
         message: "Please provide origin and destination",
       });
     }
+    
 
     const directionsUrl = `https://us1.locationiq.com/v1/directions/driving/${originLon},${originLat};${destLon},${destLat}?key=${apiKey}`;
 
     try {
       const response = await axios.get(directionsUrl);
+      const fare = calculateFare.getFare(response.data.routes[0].distance, response.data.routes[0].duration)
+      response.data.routes[0].fare = fare
       if (response) {
         res.status(200).json({
           success: true,
-          distance: response.data, //.routes[0].distance
+          route: response.data.routes[0] 
         });
       }
     } catch (error) {
