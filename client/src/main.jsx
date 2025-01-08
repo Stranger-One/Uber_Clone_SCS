@@ -21,6 +21,7 @@ import {
 } from "./pages/index.js";
 import GlobalContext from "./contexts/globalContext.jsx";
 import CaptainContext from "./contexts/CaptainContext.jsx";
+import SocketContext from "./contexts/SocketContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -129,8 +130,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <GlobalContext>
-    <CaptainContext>
-      <RouterProvider router={router} />
-    </CaptainContext>
+    <SocketContext>
+      <CaptainContext>
+        <RouterProvider router={router} />
+      </CaptainContext>
+    </SocketContext>
   </GlobalContext>
 );

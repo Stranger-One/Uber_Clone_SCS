@@ -9,7 +9,7 @@ const CaptainDetails = () => {
     
   
   return (
-    <div className="w-full h-[300px] bg-white overflow-auto">
+    <div className="w-full h-fit bg-white overflow-auto">
           <div className="">
             <div className="flex items-start justify-between py-2">
               <div className=" relative flex items-center gap-2">
@@ -19,7 +19,7 @@ const CaptainDetails = () => {
                     backgroundImage: "url('')",
                   }}
                 ></div>
-                <h2 className="text-2xl font-semibold capitalize">{captainDetails.fullname.firstname + " " + captainDetails.fullname.lastname}</h2>
+                <h2 className="text-2xl font-semibold capitalize">{captainDetails?.fullname?.firstname + " " + captainDetails?.fullname?.lastname}</h2>
               </div>
 
               <div className="flex flex-col items-end text-lg">

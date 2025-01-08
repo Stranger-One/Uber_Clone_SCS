@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
 import CaptainService from "../services/CaptainService";
+import { useGlobal } from "../contexts/globalContext";
 
 const UserProtector = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const token = JSON.parse(localStorage.getItem("token"));
   const navigate = useNavigate();
   const location = useLocation();
+  const {setUserData} = useGlobal()
 
 //   console.log("token", token);
 
@@ -19,6 +21,7 @@ const UserProtector = ({ children }) => {
       return navigate("/auth/user-login");
     }
 
+    setUserData(userProfileResponse.user)
     // console.log("User is logged in");
     setLoading(false);
   };

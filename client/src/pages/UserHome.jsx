@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AvailableVehicles,
   ConfirmRide,
@@ -10,6 +10,8 @@ import {
 } from "../components";
 import { FaMapMarkerAlt, FaRupeeSign } from "react-icons/fa";
 import axios from "axios";
+import { useSocket } from "../contexts/SocketContext";
+import { useGlobal } from "../contexts/globalContext";
 
 const UserHome = () => {
   const [pannel, setPannel] = useState(1);
@@ -17,6 +19,8 @@ const UserHome = () => {
   const [rideRoute, setRideRoute] = useState(null)
   const [selectedVehicle, setSelectedVehicle] = useState(null)
   const token = JSON.parse(localStorage.getItem("token"))
+  const { socket } = useSocket()
+  const { userData } = useGlobal()
 
   const createRide = async () => {
     // console.log("selectedVehicle", selectedVehicle);
@@ -31,8 +35,6 @@ const UserHome = () => {
         fare: selectedVehicle.fare
       }
     }
-    // console.log("data", data)
-    // create ride
     const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/ride/create`, data, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -41,6 +43,14 @@ const UserHome = () => {
     console.log("response", response.data)
     setPannel(4)
   };
+
+  useEffect(() => {
+    if (socket && userData) {
+      // console.log("userData", userData)
+      socket.emit("join", { userId: userData?._id, userType: "user" })
+    }
+  }, [socket, userData])
+
 
 
   return (
