@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CaptainService from "../services/CaptainService";
 import { useGlobal } from "../contexts/globalContext";
 import { toast } from "react-hot-toast";
+import { useCaptainData } from "../contexts/CaptainContext";
 
 const CaptainRegister = () => {
   const [firstname, setFirstname] = useState("");
@@ -15,8 +16,8 @@ const CaptainRegister = () => {
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [vehicleCapacity, setVehicleCapacity] = useState("");
   const [loading, setLoading] = useState(false);
-  const { captainData, setCaptainData } = useGlobal();
   const navigate = useNavigate();
+  const { setCaptainDetails } = useCaptainData()
 
   const handleCaptainRegister = async (e) => {
     e.preventDefault();
@@ -38,10 +39,11 @@ const CaptainRegister = () => {
 
     const response = await CaptainService.registerCaptain(Data);
     console.log("Captain register response", response);
+    // console.log("Captain register response", response);
     if (response?.success) {
       toast.success(response.message);
       localStorage.setItem("token", JSON.stringify(response.token));
-      setCaptainData(response.captain);
+      setCaptainDetails(response.captain);
       setFirstname("");
       setLastname("");
       setEmail("");
@@ -51,8 +53,8 @@ const CaptainRegister = () => {
       setVehiclePlate("");
       setVehicleCapacity("");
       navigate("/captain");
+
     } else {
-      // console.log("Captain register response", response);
       if (response?.errors) {
         response.errors.map((error) => toast.error(error.msg.split("::")[1]));
       } else if (response?.message) {

@@ -9,6 +9,7 @@ import {
   UberLogo,
 } from "../components";
 import { FaMapMarkerAlt, FaRupeeSign } from "react-icons/fa";
+import axios from "axios";
 
 const UserHome = () => {
   const [pannel, setPannel] = useState(1);
@@ -17,22 +18,28 @@ const UserHome = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(null)
   const token = JSON.parse(localStorage.getItem("token"))
 
-  const createRide = () => {
+  const createRide = async () => {
     // console.log("selectedVehicle", selectedVehicle);
     // console.log("fromTo", fromTo);
     // console.log("rideRoute", rideRoute);
     // console.log("token", token);
-    
+
     const data = {
-      token,
       pickup: fromTo.origin.display_name,
       destination: fromTo.destination.display_name,
       vehicle: {
         fare: selectedVehicle.fare
       }
     }
-    console.log("data", data)
+    // console.log("data", data)
     // create ride
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/ride/create`, data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+    console.log("response", response.data)
+    setPannel(4)
   };
 
 
@@ -49,7 +56,7 @@ const UserHome = () => {
         ) : pannel === 3 ? (
           <ConfirmRide setPannel={setPannel} rideRoute={rideRoute} selectedVehicle={selectedVehicle} createRide={createRide} fromTo={fromTo} />
         ) : pannel === 4 ? (
-          <LookingForDriver />
+          <LookingForDriver fromTo={fromTo} />
         ) : (
           <RideConfirm />
         )}

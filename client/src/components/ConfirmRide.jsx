@@ -9,7 +9,7 @@ const ConfirmRide = ({ setPannel, createRide, selectedVehicle, fromTo }) => {
     createRide()
   };
   return (
-    <div className="w-full h-[500px] bg-gray-600 overflow-auto">
+    <div className="w-full h-fit bg-gray-600 overflow-auto">
       <div className="flex flex-col items-center bg-white shadow-md rounded-md w-full max-w-md mx-auto p-4 space-y-4">
         {/* Header */}
         <div className="w-full flex items-center justify-between">

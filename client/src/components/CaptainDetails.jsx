@@ -1,8 +1,13 @@
 import React from 'react'
 import { MdAccessTime } from "react-icons/md";
 import { MdSpeed } from "react-icons/md";
+import { useCaptainData } from '../contexts/CaptainContext';
 
 const CaptainDetails = () => {
+    const { captainDetails, setCaptainDetails } = useCaptainData()
+    console.log("captainDetails", captainDetails);
+    
+  
   return (
     <div className="w-full h-[300px] bg-white overflow-auto">
           <div className="">
@@ -14,7 +19,7 @@ const CaptainDetails = () => {
                     backgroundImage: "url('')",
                   }}
                 ></div>
-                <h2 className="text-2xl font-semibold ">Harsh Patel</h2>
+                <h2 className="text-2xl font-semibold capitalize">{captainDetails.fullname.firstname + " " + captainDetails.fullname.lastname}</h2>
               </div>
 
               <div className="flex flex-col items-end text-lg">

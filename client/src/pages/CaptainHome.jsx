@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { CaptainDetails, NewRideOffer, UberLogo } from "../components";
 
 const CaptainHome = () => {
-  const [newRide, setNewRide] = useState(true)
+  const [newRide, setNewRide] = useState(false)
   return (
     <section className="w-full h-screen relative grid grid-rows-[65vh_35vh]">
       <UberLogo className="absolute top-6 left-6" />

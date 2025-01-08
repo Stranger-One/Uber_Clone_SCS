@@ -20,6 +20,7 @@ import {
   UserRegister,
 } from "./pages/index.js";
 import GlobalContext from "./contexts/globalContext.jsx";
+import CaptainContext from "./contexts/CaptainContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
         path: "user",
         element: (
           <UserProtector>
-            <UserHomeLayout/>
+            <UserHomeLayout />
           </UserProtector>
         ),
         children: [
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'riding',
-            element: <Riding/>
+            element: <Riding />
           }
         ]
       },
@@ -55,18 +56,18 @@ const router = createBrowserRouter([
             <CaptainHomeLayout />
           </CaptainProtector>
         ),
-        children:[
+        children: [
           {
             index: true,
             element: <CaptainHome />
           },
           {
             path: "client",
-            element: <ClientDetails/>
+            element: <ClientDetails />
           },
           {
             path: "pickup",
-            element: <PickUp/>
+            element: <PickUp />
           }
         ]
       },
@@ -128,6 +129,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <GlobalContext>
-    <RouterProvider router={router} />
+    <CaptainContext>
+      <RouterProvider router={router} />
+    </CaptainContext>
   </GlobalContext>
 );
