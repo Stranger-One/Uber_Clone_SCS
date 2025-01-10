@@ -1,11 +1,55 @@
 import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
+import { useCaptainData } from "../contexts/CaptainContext";
+import RideService from "../services/RideService.js";
 
 const ClientDetails = () => {
+    const { newRideDetails, setNewRideDetails } = useCaptainData()
   const navigate = useNavigate();
   const [isAccepted, setIsAccepted] = useState(false);
+  const token = JSON.parse(localStorage.getItem("token"))
 
+  const handleAccept = async () => {
+    // setIsAccepted(true)
+    const updateData = {
+      ...newRideDetails[0],
+      status: "accepted",
+    }
+
+    const rideId = newRideDetails[0]._id
+    // console.log("data", {
+    //   rideId,
+    //   updateData,
+    //   token
+
+    // })
+    const response = await RideService.updateRide(rideId, updateData, token)
+    console.log("response", response.ride)
+    setNewRideDetails([response.ride])
+    setIsAccepted(true)
+  };
+
+  const handleGoForPic = async () => {
+    const updateData = {
+      ...newRideDetails[0],
+      status: "out for pickup",
+    }
+
+    const rideId = newRideDetails[0]._id
+    // console.log("data", {
+    //   rideId,
+    //   updateData,
+    //   token
+
+    // })
+    const response = await RideService.updateRide(rideId, updateData, token)
+    console.log("response", response.ride)
+    setNewRideDetails([response.ride])
+    navigate("/captain/pickup");
+  };
+  
+  console.log("newRideDetails", newRideDetails)
   return (
     <section className="w-full h-screen relative">
       <div className="header flex items-center justify-between p-4 fixed top-0 left-0 w-full">
@@ -24,11 +68,11 @@ const ClientDetails = () => {
                 backgroundImage: "url('')",
               }}
             ></div>
-            <h2 className="text-2xl font-semibold ">Harsh Patel</h2>
+            <h2 className="text-2xl font-semibold ">{`${newRideDetails[0]?.user?.fullname?.firstname} ${newRideDetails[0]?.user?.fullname?.lastname}`}</h2>
           </div>
 
           <div className="flex flex-col items-end text-lg">
-            <h1 className="text-3xl font-bold">₹125.00</h1>
+            <h1 className="text-3xl font-bold">₹{newRideDetails[0]?.fare}</h1>
             <p className="font-semibold text-gray-600 text-lg">2.2 km</p>
           </div>
         </div>
@@ -38,7 +82,7 @@ const ClientDetails = () => {
             <div>
               <p className="text-gray-500 text-lg uppercase">Pick Up</p>
               <p className="font-semibold text-gray-800 text-2xl">
-                562/11-A Kankariya Talab, Bhopal
+              {newRideDetails[0]?.pickup}
               </p>
             </div>
           </div>
@@ -48,7 +92,7 @@ const ClientDetails = () => {
             <div>
               <p className="text-gray-500 text-lg uppercase">Drop Off</p>
               <p className="font-semibold text-gray-800 text-2xl">
-                562/11-A Kankariya Talab, Bhopal
+              {newRideDetails[0]?.destination}
               </p>
             </div>
           </div>
@@ -68,24 +112,25 @@ const ClientDetails = () => {
           </p>
           <span className="flex justify-between w-full items-center text-lg font-semibold">
             <h2>Apple Pay</h2>
-            <h2>₹100.00</h2>
+            <h2>₹{newRideDetails[0]?.fare}</h2>
           </span>
           <span className="flex justify-between w-full items-center text-lg font-semibold">
             <h2>Discount</h2>
-            <h2>₹25.00</h2>
+            <h2>₹25</h2>
           </span>
           <span className="flex justify-between w-full items-center text-lg font-semibold">
             <h2>Paid Amount</h2>
-            <h2>₹125.00</h2>
+            <h2>₹{Number(newRideDetails[0]?.fare) + 25 }</h2>
           </span>
         </div>
         {isAccepted ? (
-          <Link
-            to={"/captain/pickup"}
+          <button
+          type="button"
+            onClick={handleGoForPic}
             className="w-full py-3 rounded-lg text-xl font-bold bg-yellow-500 block text-center"
           >
             Go To Pic Up
-          </Link>
+          </button>
         ) : (
           <div className="w-full flex items-center justify-between gap-2 text-white">
             <button
@@ -96,7 +141,7 @@ const ClientDetails = () => {
             </button>
             <button
               type="button"
-              onClick={() => setIsAccepted(true)}
+              onClick={handleAccept}
               className="w-full py-3 rounded-lg text-xl font-bold bg-green-600 border-2"
             >
               Accept

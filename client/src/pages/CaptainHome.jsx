@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { CaptainDetails, NewRideOffer, UberLogo } from "../components";
 import { useCaptainData } from "../contexts/CaptainContext";
@@ -6,8 +6,9 @@ import { useSocket } from "../contexts/SocketContext";
 
 const CaptainHome = () => {
   const [newRide, setNewRide] = useState(false)
+  const [newRideData, setNewRideData] = useState(null)
   const { socket } = useSocket()
-  const { captainDetails } = useCaptainData()
+  const { captainDetails, setNewRideDetails } = useCaptainData()
 
   useEffect(() => {
     if (socket && captainDetails) {
@@ -28,6 +29,23 @@ const CaptainHome = () => {
       return () => clearInterval(interval);
     }
   }, [socket, captainDetails])
+
+  const handleNewRide = useCallback((data)=>{
+    console.log("new ride", data)
+    setNewRideDetails(data)
+    setNewRideData(data)
+    setNewRide(true)
+  },{socket})
+
+  useEffect(()=>{
+    if(socket){
+      socket.on("new_ride", handleNewRide)
+
+      return ()=> {
+        socket.off("new_ride", handleNewRide)
+      }
+    }
+  }, [socket])
   
   return (
     <section className="w-full h-screen relative grid grid-rows-[65vh_35vh]">
@@ -37,7 +55,7 @@ const CaptainHome = () => {
       <div className="w-full flex flex-col justify-end p-2">
         <CaptainDetails />
       </div>
-      {newRide && <NewRideOffer setNewRide={setNewRide} />}
+      {newRide && <NewRideOffer newRideData={newRideData} setNewRide={setNewRide} />}
     </section>
   );
 };

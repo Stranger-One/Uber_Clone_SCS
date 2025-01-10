@@ -5,68 +5,36 @@ import Captain from "./models/captainModel.js";
 let io;
 
 export const initializeSocket = (server) => {
-  try {
     io = new Server(server, {
-      cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-      },
-    });
-
-    io.on("connection", (socket) => {
-      console.log(`Client Connected: ${socket.id}`);
-
-      socket.on("join", async (data) => {
-        try {
-          const { userId, userType } = data;
-          console.log("join", { userId, userType, socketId: socket.id });
-
-          if (!userId || !userType) {
-            console.error("Invalid join data received");
-            return;
-          }
-
-          if (userType === "user") {
-            await User.findByIdAndUpdate(userId, { socketId: socket.id });
-          } else if (userType === "captain") {
-            await Captain.findByIdAndUpdate(userId, { socketId: socket.id });
-          }
-        } catch (error) {
-          console.error("Error in join event:", error);
+        cors: {
+            origin: '*',
+            methods: ['GET', 'POST']
         }
-      });
+    })
 
-      socket.on("update-captain-location", async (data) => {
-        const { captainId, location } = data;
-        console.log("update-captain-location", { captainId, location });
+    io.on("connection", (socket)=>{
+        console.log(`Client Connected: ${socket.id} `)
 
-        if (!location || !location.ltd || !location.lng) {
-          return socket.emit("error", {
-            message: "Invalid location details!",
-          });
-        }
+        socket.on("join", async (data)=>{
+            const {userId, userType} = data;
 
-        await Captain.findByIdAndUpdate(captainId, {
-          location: {
-            ltd: location.ltd,
-            lng: location.lng,
-          },
-        });
-      });
+            if(userType === 'user'){
+                await User.findByIdAndUpdate(userId, {socketId: socket.id})
+            } else if(userType === 'captain'){
+                await Captain.findByIdAndUpdate(userId, {socketId: socket.id})
+            }
+        })
 
-      socket.on("disconnect", () => {
-        console.log(`Client disconnected: ${socket.id}`);
-      });
-    });
-  } catch (error) {
-    console.error("Socket initialization error:", error);
-  }
+        socket.on("disconnect", ()=>{
+            console.log(`Client disconnected: ${socket.id} `)
+        })
+    })
 };
 
 export const sendMessageToSocketId = (socketId, message) => {
-  if (io) {
-    io.to(socketId).emit("message", message);
-  } else {
-    console.log("Socket.io is not initialized!");
-  }
-};
+    if(io){
+        io.to(socketId).emit("new_ride", message)
+    } else {
+        console.log("Socket.io is not initialized!")
+    }
+}
