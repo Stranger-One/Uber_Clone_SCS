@@ -2,23 +2,51 @@ import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AfterOtpComfirm, Route } from "../components";
+import { useCaptainData } from "../contexts/CaptainContext";
+import RideService from "../services/RideService";
 
 const PickUp = () => {
   const navigate = useNavigate();
   const [isOpenRoutes, setIsOpenRoutes] = useState(false);
   const [isOtpConfirmed, setIsOtpConfirmed] = useState(false);
   const [pannel, setPannel] = useState(1);
+  const { newRideDetails, setNewRideDetails } = useCaptainData()
+  const [otp, setOtp] = useState('')
+  const token = JSON.parse(localStorage.getItem("token"))
+  
 
-  const handleOtpSubmit = (e) => {
+  const handleOtpSubmit = async (e) => {
     e.preventDefault();
-    setIsOtpConfirmed(true);
-    setPannel(2)
+
+    console.log("start Ride:", {
+      ...newRideDetails[0],
+      otp,
+    })
+
+    const response = await RideService.confirmOtp(newRideDetails[0]._id, otp, token)
+    console.log("response", response)
+    if(response?.success){
+      setIsOtpConfirmed(true);
+      setPannel(2)
+    } else {
+      alert('Invalid OTP')
+    }
   };
 
-  const handleFinishRide = (e) => {
+  const handleFinishRide = async (e) => {
     setPannel(1)
+
+    const response = await RideService.updateRide(newRideDetails[0]._id, {
+      status: "completed",
+    }, token)
+
+    console.log("finish ride update", response);
+    
+
+
+
     navigate('/captain')
-      
+
   };
 
   return (
@@ -30,16 +58,22 @@ const PickUp = () => {
         <h2 className="text-xl font-semibold capitalize">pick up</h2>
       </div>
 
-      <div className="w-full flex flex-col justify-end h-full pt-20">
+      <div className="w-full h-full ">
+        <img src="https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg" alt="" className="h-full object-cover" />
+      </div>
+
+      <div className="w-full flex flex-col justify-end h-full pt-20 absolute top-0 left-0">
         {pannel === 1 ? (
           <form
             onSubmit={handleOtpSubmit}
-            className="w-full bg-gray-600 p-4 rounded-t-lg space-y-5"
+            className="w-full bg-gray-300 p-4 rounded-t-lg space-y-5"
           >
             <h1 className="text-3xl text-center font-semibold">Confirm OTP</h1>
             <input
-            required
+              required
               type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
               placeholder="Enter OTP"
               className="w-full p-3 text-xl border-none outline-none rounded-lg"
             />
@@ -52,7 +86,8 @@ const PickUp = () => {
           </form>
         ) : pannel === 2 ? (
           <AfterOtpComfirm
-          setPannel={setPannel}
+
+            setPannel={setPannel}
             isOpenRoutes={isOpenRoutes}
             setIsOpenRoutes={setIsOpenRoutes}
           />

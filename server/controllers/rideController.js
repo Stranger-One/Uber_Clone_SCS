@@ -58,11 +58,13 @@ export default {
         20
       );
 
-      
-      const ride = await Ride.find({_id: newRide._id}).populate("user")
-      
+      const ride = await Ride.find({ _id: newRide._id }).populate("user");
+
       nearByCaptains.map((captain) => {
-        sendMessageToSocketId(captain.socketId, ride);
+        sendMessageToSocketId(captain.socketId, {
+          message: "new_ride",
+          data: ride,
+        });
       });
       console.log("nearByCaptains", nearByCaptains);
     } catch (error) {
@@ -79,33 +81,86 @@ export default {
       if (!rideId || !status || !captain) {
         return res.status(400).json({
           success: false,
-          message: "Invalid request parameters"
+          message: "Invalid request parameters",
         });
       }
 
-      const validStatuses = ['accepted', 'ongoing', "out for pickup", 'completed', 'cancelled'];
+      const validStatuses = [
+        "accepted",
+        "ongoing",
+        "out for pickup",
+        "completed",
+        "cancelled",
+      ];
       if (!validStatuses.includes(status)) {
         return res.status(400).json({
           success: false,
-          message: "Invalid status"
+          message: "Invalid status",
         });
       }
 
-      const updatedRide = await rideService.updateRideStatus(rideId, status, captain._id);
+      const updatedRide = await rideService.updateRideStatus(
+        rideId,
+        status,
+        captain._id
+      );
+
+      // console.log("updatedRide", updatedRide);
 
       res.status(200).json({
         success: true,
         message: "Ride updated successfully",
-        ride: updatedRide
+        ride: updatedRide,
       });
-
     } catch (error) {
       console.error("Update ride error:", error);
       res.status(500).json({
         success: false,
         message: error.message || "Failed to update ride",
-        error
+        error,
       });
     }
-  }
+  },
+
+  confirmOtp: async (req, res) => {
+    const { otp, rideId } = req.body;
+
+    try {
+      const ride = await Ride.findById(rideId).select("+otp");
+      if (!ride) {
+        return res.status(404).json({
+          success: false,
+          message: "Ride not found",
+        });
+      }
+
+      if (ride.otp != otp) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid OTP",
+        });
+      }
+
+      const updatedRide = await Ride.findByIdAndUpdate(rideId, {
+        status: "ongoing",
+      }).populate("user").populate("captain");
+
+      console.log("updatedRide", updatedRide)
+      sendMessageToSocketId(updatedRide.user.socketId, {
+        message: "ride_start",
+        data: updatedRide
+      })
+
+      res.status(200).json({
+        success: true,
+        message: "Ride confirmed successfully",
+        ride: updatedRide
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Error in confirm ride",
+      });
+    }
+  },
 };

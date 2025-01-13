@@ -23,7 +23,7 @@ const NewRideOffer = ({ setNewRide }) => {
 
           <div className="flex flex-col items-end text-lg">
             <h1 className="text-3xl font-bold">₹{newRideDetails[0]?.fare}</h1>
-            <p className="font-semibold text-gray-600 text-lg">2.2 km</p>
+            {/* <p className="font-semibold text-gray-600 text-lg">2.2 km</p> */}
           </div>
         </div>
         <div className="w-full p-2">
@@ -31,7 +31,7 @@ const NewRideOffer = ({ setNewRide }) => {
           <div className="flex items-start space-x-2 py-2 border-t-2 border-white">
             <div>
               <p className="text-gray-500 text-lg uppercase">Pick Up</p>
-              <p className="font-semibold text-gray-800 text-2xl">{newRideDetails[0]?.pickup}</p>
+              <p className="font-semibold text-gray-800 text-2xl line-clamp-2">{newRideDetails[0]?.pickup}</p>
             </div>
           </div>
 
@@ -39,7 +39,7 @@ const NewRideOffer = ({ setNewRide }) => {
           <div className="flex items-start space-x-2 py-2 border-t-2 border-white">
             <div>
               <p className="text-gray-500 text-lg uppercase">Drop Off</p>
-              <p className="font-semibold text-gray-800 text-2xl">{newRideDetails[0]?.destination}</p>
+              <p className="font-semibold text-gray-800 text-2xl line-clamp-2">{newRideDetails[0]?.destination}</p>
             </div>
           </div>
         </div>

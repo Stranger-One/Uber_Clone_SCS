@@ -17,14 +17,16 @@ export default {
 
         const updatedRide = await Ride.findById(rideId)
             .populate('user')
-            .populate('captain');
+            .populate('captain').select("+otp");
 
         // Get user to send notification
         const user = await User.findById(ride.user);
+        console.log("user rideservice", user);
+        
         if (user?.socketId) {
             sendMessageToSocketId(user.socketId, {
-                type: 'RIDE_UPDATE',
-                ride: updatedRide
+                message: 'RIDE_UPDATE',
+                data: updatedRide
             });
         }
 

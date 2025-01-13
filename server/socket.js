@@ -19,7 +19,9 @@ export const initializeSocket = (server) => {
             const {userId, userType} = data;
 
             if(userType === 'user'){
-                await User.findByIdAndUpdate(userId, {socketId: socket.id})
+               const updatedUser = await User.findByIdAndUpdate(userId, {socketId: socket.id}, {new: true})
+               console.log("updatedUser", updatedUser);
+               
             } else if(userType === 'captain'){
                 await Captain.findByIdAndUpdate(userId, {socketId: socket.id})
             }
@@ -31,9 +33,9 @@ export const initializeSocket = (server) => {
     })
 };
 
-export const sendMessageToSocketId = (socketId, message) => {
+export const sendMessageToSocketId = (socketId, info) => {
     if(io){
-        io.to(socketId).emit("new_ride", message)
+        io.to(socketId).emit(info.message, info.data)
     } else {
         console.log("Socket.io is not initialized!")
     }

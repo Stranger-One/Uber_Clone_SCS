@@ -39,6 +39,26 @@ export default {
         }
     },
 
+    confirmOtp: async (rideId, otp, token) => {
+        try {
+            const response = await axiosInstance.post(`/confirm-otp`, {
+                rideId,
+                otp
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('confirm otp error:', error);
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Failed to confirm otp'
+            };
+        }
+    },
+
     getRideDetails: async (rideId, token) => {
         try {
             const response = await axiosInstance.get(`/${rideId}`, {

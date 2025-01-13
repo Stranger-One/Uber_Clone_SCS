@@ -67,7 +67,9 @@ const SearchRideForm = ({ setPannel, setRideRoute, setFromTo }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full p-4 bg-white">
+      <form onSubmit={handleSubmit} className="w-full p-4 rounded-t-lg bg-white" style={{
+                boxShadow: "0px -5px 10px gray",
+              }}>
         <div className="flex items-center justify-between p-1">
           <h2 className="text-3xl font-semibold mb-4">Find aa trip</h2>
           <button type="button" onClick={() => setIsOpenSuggestions((state) => !state)}>

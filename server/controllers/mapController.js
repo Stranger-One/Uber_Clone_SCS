@@ -92,7 +92,7 @@ export default {
     const { query } = req.query;
 
     if (!query) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Please provide a query",
       });

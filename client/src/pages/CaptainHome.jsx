@@ -50,7 +50,9 @@ const CaptainHome = () => {
   return (
     <section className="w-full h-screen relative grid grid-rows-[65vh_35vh]">
       <UberLogo className="absolute top-6 left-6" />
-      <div className="w-full h-full bg-blue-500"></div>
+      <div className="w-full h-full ">
+        <img src="https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg" alt="" className="h-full object-cover" />
+      </div>
 
       <div className="w-full flex flex-col justify-end p-2">
         <CaptainDetails />
